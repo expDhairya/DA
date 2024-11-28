@@ -1,0 +1,490 @@
+###classification in Python :
+
+-->
+
+attribute = ["subject", "exam_type", "no_of_exam", "component", "result", "mode_exam"]
+value = [["DA", "AWD", "IOT"], ["Internal", "External"], ["Single", "Double"], ["Laptop", "PC", "Tab"], ["Pass", "Fail"], ["Online", "Offline"]]
+
+main_list = []
+unique_elements = []
+
+num_sublists = int(input("How many sublists do you want to create? "))
+
+for i in range(num_sublists):
+    num_elements = len(attribute)
+    sublist = []
+    for j in range(num_elements):
+        valid_input = False
+        while not valid_input:
+            element = input(f"Enter {attribute[j]} (allowed values: {', '.join(value[j])}) for sublist {i+1}: ")
+            if element in value[j]: 
+                valid_input = True
+                sublist.append(element)
+                if element not in unique_elements:
+                    unique_elements.append(element)
+            else:
+                print(f"Invalid input! Please enter one of the allowed values for {attribute[j]}.")
+
+    main_list.append(sublist)
+
+print("The list of lists is:", main_list)
+
+classified_results = []
+
+for exam in main_list:
+    subject, exam_type, no_of_exam, component, result, mode_exam = exam
+
+    if subject == "DA" and result == "Pass":
+        classification = "Good Performance"
+    elif subject == "AWD" and result == "Fail":
+        classification = "Needs Improvement"
+    elif subject == "IOT" and result == "Fail" and no_of_exam == "Single":
+        classification = "Retake Recommended"
+    elif exam_type == "External" and result == "Pass":
+        classification = "Excellent"
+    else:
+        classification = "Average"
+
+    classified_results.append((exam, classification))
+
+for exam, classification in classified_results:
+    print(f"Exam: {exam} -> Classification: {classification}")
+
+
+----------------------------------------------------------------------------------------------------------
+
+
+###ARM in Python :
+
+-->
+
+main_list = []
+unique_elements = []
+element_counts = {}
+
+num_sublists = int(input("How many sublists do you want to create? "))
+min_support = int(input("Enter the minimum support value: "))
+
+for i in range(num_sublists):
+    num_elements = int(input(f"How many elements in sublist {i + 1}? "))
+    sublist = []
+    for j in range(num_elements):
+        element = input(f"Enter element {j + 1} for sublist {i + 1}: ")
+        sublist.append(element)
+        if element not in unique_elements:
+            unique_elements.append(element)  
+            element_counts[element] = 1  
+        else:
+            element_counts[element] += 1  
+    main_list.append(sublist)
+
+supported_elements = []
+for element, count in element_counts.items():
+    if count > min_support:
+        supported_elements.append(element)
+
+print("The list of lists is:", main_list)
+print("The list of unique elements is:", unique_elements)
+print("The count of each element is:", element_counts)
+print(f"Elements with at least {min_support} support:", supported_elements)
+
+pairs_list = []
+for i in range(len(supported_elements)):
+    for j in range(i + 1, len(supported_elements)):
+        pair = (supported_elements[i], supported_elements[j])
+        pairs_list.append(pair)
+
+print("The list of pairs is:", pairs_list)
+
+pair_counts = {}
+for pair in pairs_list:
+    pair_counts[pair] = 0
+
+for pair in pairs_list:
+    for sublist in main_list:
+        if pair[0] in sublist and pair[1] in sublist:
+            pair_counts[pair] += 1
+
+for pair, count in pair_counts.items():
+    print(f"{pair} -> {count}")
+
+
+confidences = {}
+for pair in pairs_list:
+    element_a_count = element_counts[pair[0]]
+    confidences[pair] = pair_counts[pair] / element_a_count * 100
+
+for pair, confidence in confidences.items():
+    print(f"Confidence({pair[0]} -> {pair[1]}) = {confidence:.2f}%")
+
+----------------------------------------------------------------------------------------------------------
+
+
+### Implement Bining process with both options: Bin by Mean & Bin by boundary.
+
+-->
+
+# Input the data
+data = []
+n = int(input("Enter the number of data values: "))
+for i in range(n):
+    value = int(input("Enter value here : "))
+    data.append(value)
+
+# Sort the data
+data.sort()
+
+# Input the bin size
+bin_size = int(input("Enter the bin size : "))
+
+# Bin by Mean
+mean_binned_data = []
+i = 0
+while i < len(data):
+    bin_values = data[i:i + bin_size]
+    mean_value = sum(bin_values) / len(bin_values)
+    for value in bin_values:
+        mean_binned_data.append(mean_value)
+    i += bin_size
+
+# Bin by Boundary
+boundary_binned_data = []
+i = 0
+while i < len(data):
+    bin_values = data[i:i + bin_size]
+    min_value = min(bin_values)
+    max_value = max(bin_values)
+    
+    for value in bin_values:
+        if abs(value - min_value) < abs(value - max_value):
+            boundary_binned_data.append(min_value)
+        else:
+            boundary_binned_data.append(max_value)
+    
+    i += bin_size
+
+# Print the results
+print("Original Data:", data)
+print("Binned by Mean:", mean_binned_data)
+print("Binned by Boundary:", boundary_binned_data)
+
+
+--------------------------------------------------------------------------------------------------------
+
+Implement Mean and Mode Program in any language.
+
+-->
+
+# Input the data
+data = []
+n = int(input("How many numbers? "))
+for i in range(n):
+    value = int(input(f"Enter number {i + 1}: "))
+    data.append(value)
+
+# Calculate Mean
+mean_value = sum(data) / n
+
+# Calculate Mode
+# Create a frequency dictionary
+frequency = {}
+for value in data:
+    if value in frequency:
+        frequency[value] += 1
+    else:
+        frequency[value] = 1
+
+# Find the maximum frequency
+max_freq = max(frequency.values())
+
+# Find the mode(s) by checking each value's frequency
+modes = []
+for key in frequency:
+    if frequency[key] == max_freq:
+        modes.append(key)
+
+# Print the results
+print("Data:", data)
+print("Mean:", mean_value)
+if len(modes) == 1:
+    print("Mode:", modes[0])
+else:
+    print("Modes:", modes)
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------
+### Clustering in Python :
+
+--> For 4 Cluster
+il = []
+k = 4
+k1 = []
+k2 = []
+k3 = []
+k4 = []
+n = input("Enter number of Observations: ")
+n = int(n)
+for i in range(n):
+    t = input("Enter Value here: ")
+    t = int(t)
+    il.append(t)
+ 
+# Initial distribution into clusters
+i = 0
+while i < n:
+    k1.append(il[i])
+    if i + 1 < n:
+        k2.append(il[i + 1])
+    if i + 2 < n:
+        k3.append(il[i + 2])
+    if i + 3 < n:
+        k4.append(il[i + 3])
+    i += 4
+ 
+print("Initial Lists:")
+print("il:", il)
+print("k1:", k1)
+print("k2:", k2)
+print("k3:", k3)
+print("k4:", k4)
+ 
+# Calculate initial means
+k1m = sum(k1) / len(k1) if k1 else 0
+k2m = sum(k2) / len(k2) if k2 else 0
+k3m = sum(k3) / len(k3) if k3 else 0
+k4m = sum(k4) / len(k4) if k4 else 0
+ 
+swap = True
+ 
+while swap:
+    swap = False
+    for cluster, mean in zip([k1, k2, k3, k4], [k1m, k2m, k3m, k4m]):
+        for value in cluster[:]:  # Create a copy to avoid modifying the list during iteration
+            distances = [abs(value - k1m), abs(value - k2m), abs(value - k3m), abs(value - k4m)]
+            closest_cluster = distances.index(min(distances))
+            if closest_cluster != [k1, k2, k3, k4].index(cluster):  # If the value needs to be moved
+                cluster.remove(value)
+                [k1, k2, k3, k4][closest_cluster].append(value)
+                swap = True
+    # Update means
+    k1m = sum(k1) / len(k1) if k1 else 0
+    k2m = sum(k2) / len(k2) if k2 else 0
+    k3m = sum(k3) / len(k3) if k3 else 0
+    k4m = sum(k4) / len(k4) if k4 else 0
+ 
+# Final clusters
+print("Final Clusters:")
+print("k1:", k1)
+print("k2:", k2)
+print("k3:", k3)
+print("k4:", k4)
+
+
+-->For 3 Cluster:-
+
+il = []
+k = 3
+k1 = []
+k2 = []
+k3 = []
+n = input ("Enter number of Observations :")
+n = int(n)
+for i in range (n):
+    t = input("Enter Value here :")
+    t = int(t)
+    il.append(t)
+i = 0
+while(i < n):
+    k1.append(il[i])
+    if(i + 1 < n):
+        k2.append(il[i + 1])
+    if(i + 2 < n):
+        k3.append(il[i + 2])
+    i = i + 3
+print(il)
+print(k1)
+print(k2)
+print(k3)
+k1m = sum(k1) / len(k1)
+k2m = sum(k2) / len(k2)
+k3m = sum(k3) / len(k3)
+swap = True
+while(swap):
+    swap = False
+    for i in k1:
+        d1 = abs(i - k1m)
+        d2 = abs(i - k2m)
+        d3 = abs(i - k3m)
+        if((d1 < d2) and (d1 < d3)):
+            print(str(i) + ": Is placed in Cluster")
+        elif(d2 < d3):
+            temp = k1.remove(i)
+            k2.append(i)
+            swap = True
+        else:
+            temp = k1.remove(i)
+            k3.append(i)
+            swap = True
+    for i in k2:
+        d1 = abs(i - k1m)
+        d2 = abs(i - k2m)
+        d3 = abs(i - k3m)
+        if((d2 < d3) and (d2 < d1)):
+            print(str(i) + ": Is placed in cluster")
+        elif(d1 < d3):
+            temp = k2.remove(i)
+            k1.append(i)
+            swap = True
+        else:
+            temp = k2.remove(i)
+            k3.append(i)
+            swap = True
+    for i in k3:
+        d1 = abs(i - k1m)
+        d2 = abs(i - k2m)
+        d3 = abs(i - k3m)
+        if((d3 < d1) and (d3 < d2)):
+            print(str(i) + ": is placed in cluster")
+        elif(d1 < d2):
+            temp = k3.remove(i)
+            k1.append(i)
+            swap = True
+        else:
+            temp = k3.remove(i)
+            k2.append(i)
+            swap = True
+    k1m = sum(k1) / len(k1)
+    k2m = sum(k2) / len(k2)
+    k3m = sum(k3) / len(k3)
+
+print(k1)
+print(k2)
+print(k3)
+
+==========================================================================================================
+
+
+***Classification using Weka :
+
+1. Create classification model to classify home loan application into following classes: Approved, Rejected and Asked for Update.
+
+-->
+
+[Note :- Last ma je hoy a badhu j last attribute ma add karva nu]
+[Note :- Do not take Numeric values]
+
+@relation home_loan_applications
+
+@attribute income numeric
+@attribute credit_score numeric
+@attribute loan_amount numeric
+@attribute employment_status {employed, unemployed, self-employed}
+@attribute existing_debts numeric
+@attribute loan_status {Approved, Rejected, Asked_for_Update}
+
+@data
+60000, 750, 150000, employed, 20000, Approved
+45000, 600, 120000, self-employed, 5000, Rejected
+50000, 700, 100000, unemployed, 10000, Asked_for_Update
+80000, 800, 200000, employed, 30000, Approved
+30000, 500, 80000, unemployed, 10000, Rejected
+
+----------------------------------------------------------------------------------------------------------
+
+2. Create Classification model of graduating students to classify into following classes: MCA, MBA, ME and other.
+
+-->
+
+@relation graduating_students
+
+@attribute marks_in_undergrad numeric
+@attribute work_experience numeric
+@attribute entrance_exam_score numeric
+@attribute specialization_preference {computer_science, business_administration, engineering, other}
+@attribute graduation_class {MCA, MBA, ME, Other}
+
+@data
+75.0, 1, 80, computer_science, MCA
+65.0, 0, 85, business_administration, MBA
+80.0, 2, 90, engineering, ME
+70.0, 1, 60, other, Other
+55.0, 3, 70, business_administration, MBA
+85.0, 0, 95, computer_science, MCA
+90.0, 5, 98, engineering, ME
+60.0, 0, 65, other, Other
+
+----------------------------------------------------------------------------------------------------------
+
+3. Create Classification model to classify credict card frauds into following classes: BusinessMan, Salaried and farmer.
+
+-->
+
+@relation credit_card_fraud_classification
+
+@attribute transaction_amount numeric
+@attribute transaction_frequency_per_month numeric
+@attribute income_level numeric
+@attribute age numeric
+@attribute occupation_class {BusinessMan, Salaried, Farmer}
+
+@data
+50000, 25, 150000, 45, BusinessMan
+10000, 10, 50000, 30, Salaried
+2000, 5, 20000, 35, Farmer
+120000, 50, 250000, 50, BusinessMan
+15000, 12, 60000, 28, Salaried
+8000, 8, 15000, 40, Farmer
+90000, 35, 180000, 55, BusinessMan
+25000, 15, 70000, 32, Salaried
+3000, 3, 10000, 50, Farmer
+
+
+- Go to the Classify tab.
+
+- Under Classifier, click Choose to select a classifier. Some good options for classification include:
+
+- J48 (Decision Tree) for interpretable models.
+- RandomForest for a robust and high-performing model.
+
+
+
+
+
+
+
+***ARM using Weka:
+
+1. Create Association Rule Mining model to credict card frauds into following classes: BusinessMan, Salaried and farmer.
+
+-->
+
+@relation credit_card_fraud_association
+
+@attribute transaction_amount_range {low, medium, high}
+@attribute transaction_type {online, in-store}
+@attribute transaction_time {morning, afternoon, evening, night}
+@attribute income_range {low, medium, high}
+@attribute occupation_class {BusinessMan, Salaried, Farmer}
+
+@data
+high, online, morning, high, BusinessMan
+medium, in-store, evening, medium, Salaried
+low, in-store, night, low, Farmer
+high, online, afternoon, high, BusinessMan
+medium, in-store, morning, medium, Salaried
+low, in-store, afternoon, low, Farmer
+high, online, night, high, BusinessMan
+medium, in-store, evening, medium, Salaried
+low, in-store, afternoon, low, Farmer
+
+
+- Go to the Associate tab.
+
+- Click Choose under the Associator section and select the Apriori algorithm. This algorithm will discover association rules from your dataset.
+
+
+----------------------------------------------------------------------------------------------------------
