@@ -1,3 +1,31 @@
+#####ggplot##### : 
+
+-->
+
+# Install and load ggplot2
+install.packages("ggplot2") # Install if not already installed
+library(ggplot2)
+
+# Create a sample dataset
+data <- data.frame(
+  x = rnorm(100, mean = 50, sd = 10), # Random numbers for x
+  y = rnorm(100, mean = 30, sd = 5),  # Random numbers for y
+  group = sample(c("A", "B"), 100, replace = TRUE) # Randomly assign groups
+)
+
+# Basic ggplot2 scatter plot
+ggplot(data, aes(x = x, y = y, color = group)) +
+  geom_point(size = 3, alpha = 0.7) + # Scatter points
+  labs(
+    title = "Scatter Plot Example",
+    x = "X-axis Label",
+    y = "Y-axis Label",
+    color = "Group"
+  ) +
+  theme_minimal() # Minimal theme
+  
+
+
 ###classification in Python :
 
 -->
